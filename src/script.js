@@ -22,7 +22,7 @@ const scene = new THREE.Scene();
 // Objects
 
 //Geometry
-const parameters = { count: 1000 };
+const parameters = { count: 1000, size: 0.02 };
 // console.log(parameters.count);
 
 const generateGalaxy = () => {
@@ -35,12 +35,24 @@ const generateGalaxy = () => {
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3;
 
-    positions[i3] = Math.random();
-    positions[i3 + 1] = Math.random();
-    positions[i3 + 2] = Math.random();
+    positions[i3] = (Math.random() - 0.5) * 3;
+    positions[i3 + 1] = (Math.random() - 0.5) * 3;
+    positions[i3 + 2] = (Math.random() - 0.5) * 3;
   }
 
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+  /* Material */
+  const material = new THREE.PointsMaterial({
+    size: parameters.size,
+    sizeAttenuation: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+
+  /** Points **/
+  const points = new THREE.Points(geometry, material);
+  scene.add(points);
 };
 
 generateGalaxy();
